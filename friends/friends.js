@@ -10,7 +10,7 @@ const friendsData = {
         {
           name: 'Fridemn',
           url: 'https://fridemn.best/',
-          avatar: 'assets/images/Hexo-Theme-MEOW.png',
+          avatar: 'assets/images/图层 1.png',
           desc: '旮旯game大神'
         },
       ]

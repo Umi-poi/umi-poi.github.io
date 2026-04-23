@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="umi"/><meta name="copyright" content="umi"/><meta name="theme-color" content="#FFB347"/><meta name="format-detection" content="telephone=no"/><meta name="keywords" content="二叉树"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-touch-fullscreen" content="yes"/><meta name="application-name" content="二叉搜索树 | my-blog"/><meta name="apple-mobile-web-app-title" content="二叉搜索树 | my-blog"/><meta name="apple-mobile-web-app-status-bar-style" content="#FFB347"/><link rel="canonical" href="http://example.com/2026/04/23/二叉搜索树/"/><meta name="description" content="二叉搜索树1.什么是二叉搜索树二叉搜索树是一种二叉树的树形数据结构，其定义如下：  空树是二叉搜索树．  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．  二叉搜索树的左右子树均为二叉搜索树    二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二叉...">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="umi"/><meta name="copyright" content="umi"/><meta name="theme-color" content="#FFB347"/><meta name="format-detection" content="telephone=no"/><meta name="keywords" content="二叉树"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-touch-fullscreen" content="yes"/><meta name="application-name" content="二叉搜索树 | my-blog"/><meta name="apple-mobile-web-app-title" content="二叉搜索树 | my-blog"/><meta name="apple-mobile-web-app-status-bar-style" content="#FFB347"/><link rel="canonical" href="http://example.com/2026/04/23/二叉搜索树/"/><meta name="description" content="二叉搜索树1.什么是二叉搜索树二叉搜索树是一种二叉树的树形数据结构，其定义如下：  空树是二叉搜索树．  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．  二叉搜索树的左右子树均为二叉搜索树     二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二...">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉搜索树 | my-blog">
 <meta property="og:url" content="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/index.html">
 <meta property="og:site_name" content="my-blog">
-<meta property="og:description" content="二叉搜索树1.什么是二叉搜索树二叉搜索树是一种二叉树的树形数据结构，其定义如下：  空树是二叉搜索树．  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．  二叉搜索树的左右子树均为二叉搜索树    二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二叉...">
+<meta property="og:description" content="二叉搜索树1.什么是二叉搜索树二叉搜索树是一种二叉树的树形数据结构，其定义如下：  空树是二叉搜索树．  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．  二叉搜索树的左右子树均为二叉搜索树     二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二...">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/assets/images/Hexo-Theme-MEOW.png">
 <meta property="article:published_time" content="2026-04-23T13:05:04.000Z">
-<meta property="article:modified_time" content="2026-04-23T13:05:04.558Z">
+<meta property="article:modified_time" content="2026-04-23T13:17:33.889Z">
 <meta property="article:author" content="umi">
 <meta property="article:tag" content="二叉树">
 <meta name="twitter:card" content="summary_large_image">
@@ -26,7 +26,8 @@
 <li><p>二叉搜索树的左右子树均为二叉搜索树</p>
 </li>
 </ul>
-<p><img   lazyload src="/assets/images/Meow-Loading.webp" data-lazy-src="/public%5Cassets%5Cimages%5Cimage%5C2-250413123509C1.gif"  alt="本地图片"></p>
+<p align="center"><img  width=800  lazyload src="/assets/images/Meow-Loading.webp" data-lazy-src="asserts/二叉搜索树.png" ></p>
+
 <p>二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二叉搜索树中，这些操作的最优时间复杂度为$O(\log n)$，最坏为$O(n)$．随机构造这样一棵二叉搜索树的期望高度为$O(\log n)$</p>
 <h2 id="2-算法"><a href="#2-算法" class="headerlink" title="2.算法"></a>2.算法</h2><p>鉴于二叉搜索树数字的顺序性，在其上查找某个节点变得十分便利</p>
 <h3 id="2-1-删除其中一个节点"><a href="#2-1-删除其中一个节点" class="headerlink" title="2.1 删除其中一个节点"></a>2.1 删除其中一个节点</h3><p>删除一个节点的操作比较复杂，因为需要考虑节点的左右子树的大小关系，以及其父节点的左右子树的大小关系。</p>
