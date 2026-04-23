@@ -3,7 +3,7 @@ const friendsData = {
     {
       class: {
         name: '小伙伴们',
-        desc: '这个分类下的友链配置了随机排列',
+        desc: '这些都是我的小伙伴们，欢迎访问他们的网站！',
         random: true
       },
       list: [
