@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="umi"/><meta name="copyright" content="umi"/><meta name="theme-color" content="#FFB347"/><meta name="format-detection" content="telephone=no"/><meta name="keywords" content="二叉树"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-touch-fullscreen" content="yes"/><meta name="application-name" content="二叉搜索树 | my-blog"/><meta name="apple-mobile-web-app-title" content="二叉搜索树 | my-blog"/><meta name="apple-mobile-web-app-status-bar-style" content="#FFB347"/><link rel="canonical" href="http://example.com/2026/04/23/二叉搜索树/"/><meta name="description" content="二叉搜索树1.什么是二叉搜索树二叉搜索树是一种二叉树的树形数据结构，其定义如下：  空树是二叉搜索树．  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．  二叉搜索树的左右子树均为二叉搜索树    二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二叉...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉搜索树 | my-blog">
+<meta property="og:url" content="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/index.html">
+<meta property="og:site_name" content="my-blog">
+<meta property="og:description" content="二叉搜索树1.什么是二叉搜索树二叉搜索树是一种二叉树的树形数据结构，其定义如下：  空树是二叉搜索树．  若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．  若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．  二叉搜索树的左右子树均为二叉搜索树    二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二叉...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/assets/images/Hexo-Theme-MEOW.png">
+<meta property="article:published_time" content="2026-04-23T13:05:04.000Z">
+<meta property="article:modified_time" content="2026-04-23T13:05:04.558Z">
+<meta property="article:author" content="umi">
+<meta property="article:tag" content="二叉树">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/assets/images/Hexo-Theme-MEOW.png"><meta name="robots" content="index,follow"/><meta name="googlebot" content="index,follow"/><meta name="revisit-after" content="1 days"/><title>二叉搜索树 | my-blog</title><link rel="shortcut icon" href="/assets/images/Hexo-Theme-MEOW.ico"><link rel="preconnect" href="/assets"/><link rel="preconnect" href="assets"/>
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/css/third-party/dist/APlayer.min.css">
+<link rel="prefetch" href="/"/><link rel="prefetch" href="/archives"/><link rel="prefetch" href="/tags"/><meta name="generator" content="Hexo 7.3.0"></head><body bg-style="none"><div class="post-progressbar-container"><div class="post-progressbar"></div></div><header><div id="navbar"><div id="nav-info"><a id="site-icon" href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a id="site-name" href="/" title="主页"><div>my-blog</div><img src="/assets/images/svg/uc/uc-home.svg" class="icon noview" alt="Icon"></a></div><div id="nav-menu"><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="sub-menu-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="sub-menu-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div></div><div id="nav-function"><div id="search-btn"><a href="javascript:void(0);" title="搜索" accesskey="s"><img src="/assets/images/svg/uc/uc-search.svg" class="icon noview" alt="Icon"><span>搜索</span></a></div><div id="menu-btn"><a href="javascript:void(0);" title="打开菜单"><img src="/assets/images/svg/uc/uc-menu.svg" class="icon noview" alt="Icon"></a></div></div></div></header><div id="menu-aside"><div id="menu-aside-container"><div id="menu-aside-info"><a href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a href="/" title="主页">my-blog</a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="menu-aside-sub-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-aside-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="menu-aside-sub-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div><hr/></div></div><main><div class="banner"><div class="banner-info"><div class="banner-avatar"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Avatar"/></div><div class="banner-title">「 MEOW 」</div></div></div><div class="post-container"><div class="post-main"><div class="post-content"><h1 class="post-title">二叉搜索树</h1><div class="post-author"><span>作者: umi</span></div><div class="post-meta"><div class="post-info"><div class="post-date"><div class="post-pubdate"><img src="/assets/images/svg/ta/ta-pubdate.svg" class="icon noview" alt="Icon"><span>发表于2026-04-23</span></div><div class="post-update"><img src="/assets/images/svg/ta/ta-update.svg" class="icon noview" alt="Icon"><span>更新于2026-04-23</span></div></div><div class="post-read"></div></div><div class="post-attribute"><div class="post-categories"><img src="/assets/images/svg/ta/ta-category.svg" class="icon noview" alt="Icon"><span><a class="post-categories-link" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="post-tags"><img src="/assets/images/svg/ta/ta-tag.svg" class="icon noview" alt="Icon"><span><a class="post-tags-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a></span></div></div></div><div class="post markdown" indent="false"><h1 id="二叉搜索树"><a href="#二叉搜索树" class="headerlink" title="二叉搜索树"></a>二叉搜索树</h1><h2 id="1-什么是二叉搜索树"><a href="#1-什么是二叉搜索树" class="headerlink" title="1.什么是二叉搜索树"></a>1.什么是二叉搜索树</h2><p>二叉搜索树是一种二叉树的树形数据结构，其定义如下：</p>
+<ul>
+<li><p>空树是二叉搜索树．</p>
+</li>
+<li><p>若二叉搜索树的左子树不为空，则其左子树上所有点的附加权值均小于其根节点的值．</p>
+</li>
+<li><p>若二叉搜索树的右子树不为空，则其右子树上所有点的附加权值均大于其根节点的值．</p>
+</li>
+<li><p>二叉搜索树的左右子树均为二叉搜索树</p>
+</li>
+</ul>
+<p><img   lazyload src="/assets/images/Meow-Loading.webp" data-lazy-src="/public%5Cassets%5Cimages%5Cimage%5C2-250413123509C1.gif"  alt="本地图片"></p>
+<p>二叉搜索树上的基本操作所花费的时间与这棵树的高度成正比．对于一个有$𝑛$个结点的二叉搜索树中，这些操作的最优时间复杂度为$O(\log n)$，最坏为$O(n)$．随机构造这样一棵二叉搜索树的期望高度为$O(\log n)$</p>
+<h2 id="2-算法"><a href="#2-算法" class="headerlink" title="2.算法"></a>2.算法</h2><p>鉴于二叉搜索树数字的顺序性，在其上查找某个节点变得十分便利</p>
+<h3 id="2-1-删除其中一个节点"><a href="#2-1-删除其中一个节点" class="headerlink" title="2.1 删除其中一个节点"></a>2.1 删除其中一个节点</h3><p>删除一个节点的操作比较复杂，因为需要考虑节点的左右子树的大小关系，以及其父节点的左右子树的大小关系。</p>
+<ul>
+<li><p>若 root 为叶子节点，直接删除该节点即可．</p>
+</li>
+<li><p>若 root 为链节点，即只有一个儿子的节点，返回这个儿子．</p>
+</li>
+<li><p>若 root 有两个非空子节点，一般是用它左子树的最大值（左子树最右的节点）或右子树的最小值（右子树最左的节点）代替它，然后将原本右子树的最小值删除</p>
+</li>
+</ul>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">deleteNode</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode], key: <span class="built_in">int</span></span>) -&gt; <span class="type">Optional</span>[TreeNode]:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> key &lt; root.val:</span><br><span class="line">            root.left = <span class="variable language_">self</span>.deleteNode(root.left, key)</span><br><span class="line">        <span class="keyword">elif</span> key &gt; root.val:</span><br><span class="line">            root.right = <span class="variable language_">self</span>.deleteNode(root.right, key)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 找到要删除的节点</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root.left:</span><br><span class="line">                <span class="keyword">return</span> root.right</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root.right:</span><br><span class="line">                <span class="keyword">return</span> root.left</span><br><span class="line">            <span class="comment"># 有两个子节点：找右子树最小节点</span></span><br><span class="line">            min_node = root.right</span><br><span class="line">            <span class="keyword">while</span> min_node.left:</span><br><span class="line">                min_node = min_node.left</span><br><span class="line">            root.val = min_node.val</span><br><span class="line">            root.right = <span class="variable language_">self</span>.deleteNode(root.right, min_node.val)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+</div><div class="post-reward"><div class="post-reward-btn" title="赞赏作者"><img src="/assets/images/svg/uc/uc-gift.svg" class="icon noview" alt="Icon"><span></span></div><div class="post-reward-content"><div class="post-reward-text"></div><div class="post-reward-list"><a href="/null" target="_blank">致谢名单</a></div></div></div><div class="post-copyright"><div class="post-copyright-info">本作品由 umi 于 2026-04-23 21:05:04 发布</div><div class="post-copyright-link"><span>作品地址：<a href="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">二叉搜索树</a></span><button class="copy-text" type="button" data-text="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/">复制</button></div><div class="post-copyright-detail">除特别声明外，本站作品均采用 <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' title='Attribution-NonCommercial-ShareAlike' target='_blank'>CC BY-NC-SA 4.0</a> 许可协议，转载请注明来自 <a href='/'>my-blog</a></div><img class="post-copyright-icon noview" src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></div><div class="post-tail-tags"><a class="post-tail-tags-link" href="/tags/%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="tag">二叉树</a></div><div class="post-nav"><a class="post-nav-prev" nopost=""></a><a class="post-nav-next" href="/2026/04/01/hello-world/" title="Hello World">下一篇<span>Hello World</span></a></div></div><aside id="post-sidebar" status="show"><div id="toc-container"><div class="toc-title"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"><span>目录</span></div><div class="toc-content" id="toc-div"><ol class="toc-list"><li class="toc-list-item toc-list-level-1"><a class="toc-list-link" href="#%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="toc-list-text">二叉搜索树</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="toc-list-text">1.什么是二叉搜索树</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#2-%E7%AE%97%E6%B3%95"><span class="toc-list-text">2.算法</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#2-1-%E5%88%A0%E9%99%A4%E5%85%B6%E4%B8%AD%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9"><span class="toc-list-text">2.1 删除其中一个节点</span></a></li></ol></li></ol></li></ol></div></div></aside></div></div><div id="toolbar" hide=""><div id="toolbar-setting-container" hide=""><div class="toolbar-item"><button id="tool-color-mode" title="深色模式" type="button"><img src="/assets/images/svg/ta/ta-moon.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button class="copy-text" id="tool-share" title="分享" type="button" data-text="http://example.com/2026/04/23/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91/"><img src="/assets/images/svg/ta/ta-share.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-plus" title="放大字体" type="button"><img src="/assets/images/svg/ta/ta-text-plus.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-minus" title="缩小字体" type="button"><img src="/assets/images/svg/ta/ta-text-minus.svg" class="icon noview" alt="Icon"></button></div></div><div class="toolbar-container"><div class="toolbar-item"><button id="tool-setting" title="设置" type="button"><img src="/assets/images/svg/ta/ta-setting.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-toc" title="目录" type="button"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-gototop" title="返回顶部" type="button"><img src="/assets/images/svg/ta/ta-up.svg" class="icon noview" alt="Icon"></button></div></div></div><div class="search-overlay"><div class="search-container"><div class="search-header"><div class="search-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+搜索</div><div class="search-close-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 21a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9a9 9 0 0 0 -9 9a9 9 0 0 0 9 9z" /><path d="M9 8l6 8" /><path d="M15 8l-6 8" /></svg></div></div><div class="search-input-box"><input id="search-input" type="search" placeholder="请输入关键词进行站内搜索……" value="" maxlength="80"/></div><div class="search-result-container"><div class="search-result-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg></div></div></div></div><div id="music-player"></div></main><footer><div class="footer"><div id="footer-copyright">© 2024 - 2026 <span>💗</span> <a href="/null">umi</a></div><div id="footer-info"><div id="footer-framework">🚀本站由 <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/chanwj/hexo-theme-meow" title="3.3.2" target="_blank">Meow</a> 强力驱动</div><div id="footer-runtime"><span id="runtime" data-startdate="2024-04-02T22:16:20.000Z">🌻已稳定运行.年.月.天</span></div></div></div></footer><div class="scripts"><script>const GLOBALCONFIG = {
+  root: '/',
+  toolbar: true,
+  lazyload_src: '/assets/images/Meow-Loading.webp',
+  friends: false,
+  album: '',
+  codeblock: true,
+  code_copy_text: false,
+  share_text: '🐱Share From Meow',
+  onblur_title: '再回来看看吧～✧(´▽`ʃ♡ƪ)',
+  mouse_click: true,
+  notify:{
+    enable: false,
+    info: '复制成功～转载请标注本文地址',
+    f12_info: '开发者模式已打开，请遵循本站版权协议'
+  },
+  search: {
+    enable: true,
+    path: '',
+    local: {
+      top_n_per_article: 1,
+      preload: false
+    }
+  },
+  encrypt: false,
+  category: false,
+};
+</script><script>if (!localStorage.getItem('color-mode')) {
+  localStorage.setItem('color-mode', 'light' || 'light');
+}
+document.body.setAttribute('data-mode', localStorage.getItem('color-mode'));
+</script>
+<script src="/js/theme/tools/utils.js"></script>
+
+<script src="/js/plugins/dist/lazyload.min.js"></script>
+
+<script src="/js/plugins/view-image.min.js"></script>
+<script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/plugins/dist/APlayer.min.js"></script>
+<script>const initAplayer = (data) => {
+  if (!data.length) return;
+
+  const ap = new APlayer({
+    container: document.getElementById('music-player'),
+    fixed: true,
+    autoplay: false,
+    theme: '#FFB347',
+    loop: 'all',
+    order: 'list',
+    volume: 0.7,
+    lrcType: 3,
+    audio: data
+  });
+
+  ap.on('play', () => {
+    document.getElementById('music-player').setAttribute("play", "");
+  });
+  ap.on('pause', () => {
+    document.getElementById('music-player').removeAttribute("play");
+  });
+};
+
+const fetchData = () => {
+  fetch('')
+    .then(res => res.json())
+    .then(result => initAplayer(result));
+};
+
+if ('') {
+  document.addEventListener("DOMContentLoaded", fetchData);
+} else {
+  document.addEventListener("DOMContentLoaded", initAplayer());;
+}</script>
+<script src="/js/plugins/dist/search.js"></script>
+
+<script src="/js/main.js" type="module"></script>
+</div></body></html>
