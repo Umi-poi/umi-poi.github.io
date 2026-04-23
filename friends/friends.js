@@ -8,7 +8,7 @@ const friendsData = {
       },
       list: [
         {
-          name: '000',
+          name: 'Fridemn',
           url: 'https://fridemn.best/',
           avatar: 'assets/images/Hexo-Theme-MEOW.png',
           desc: '旮旯game大神'
