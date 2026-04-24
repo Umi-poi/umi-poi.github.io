@@ -4,7 +4,7 @@ const friendsData = {
       class: {
         name: '小伙伴们',
         desc: '这些都是我的小伙伴们，欢迎访问他们的网站！',
-        random: true
+        random: flase
       },
       list: [
         {
@@ -18,7 +18,7 @@ const friendsData = {
           url: 'https://qodicat.github.io/',
           avatar: 'assets/images/Hexo-Theme-MEOW.png',
           desc: '这是我的学长！'
-        }
+        },
       ]
     },
   ]
