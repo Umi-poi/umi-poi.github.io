@@ -13,6 +13,12 @@ const friendsData = {
           avatar: 'assets/images/图层 1.png',
           desc: '旮旯game大神'
         },
+        {
+          name: 'Qodicat',
+          url: 'https://qodicat.github.io/',
+          avatar: 'assets/images/Hexo-Theme-MEOW.png',
+          desc: '这是我的学长！'
+        }
       ]
     },
   ]
