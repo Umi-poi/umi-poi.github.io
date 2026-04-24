@@ -4,7 +4,7 @@ const friendsData = {
       class: {
         name: '小伙伴们',
         desc: '这些都是我的小伙伴们，欢迎访问他们的网站！',
-        random: false
+        random: true
       },
       list: [
         {
