@@ -1,4 +1,5 @@
 @import url("/assets/fonts/vivoSans-Regular/result.css");
+@import url("/assets/fonts/vivoSans-Regular/result.css");
 @import url("/assets/fonts/SFMonoRegular/result.css");
 body[data-mode='light'] {
   --theme-color: #ffb347;
