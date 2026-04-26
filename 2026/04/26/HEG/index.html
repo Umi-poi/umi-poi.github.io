@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="umi"/><meta name="copyright" content="umi"/><meta name="theme-color" content="#FFB347"/><meta name="format-detection" content="telephone=no"/><meta name="keywords" content="Hexo Theme MEOW"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-touch-fullscreen" content="yes"/><meta name="application-name" content="HEG | Umi's Blog"/><meta name="apple-mobile-web-app-title" content="HEG | Umi's Blog"/><meta name="apple-mobile-web-app-status-bar-style" content="#FFB347"/><link rel="canonical" href="http://example.com/2026/04/26/HEG/"/><meta name="description" content="把 VisRAG 的页级视觉检索、VISA 的框级视觉归因、MoLoRAG 的逻辑页图拼起来，做成一个 Hierarchical Evidence Graph RAG。第一层检索页，第二层在页内找块&#x2F;框，第三层把多个框通过“因果、对比、前后定义、图表-正文解释”等关系连成证据链。  假设问题是： “论文中最终采用的损失函数是什么？它相较基线提升了多少？” 真实证据可能分散成这样： ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HEG | Umi&#39;s Blog">
+<meta property="og:url" content="http://example.com/2026/04/26/HEG/index.html">
+<meta property="og:site_name" content="Umi&#39;s Blog">
+<meta property="og:description" content="把 VisRAG 的页级视觉检索、VISA 的框级视觉归因、MoLoRAG 的逻辑页图拼起来，做成一个 Hierarchical Evidence Graph RAG。第一层检索页，第二层在页内找块&#x2F;框，第三层把多个框通过“因果、对比、前后定义、图表-正文解释”等关系连成证据链。  假设问题是： “论文中最终采用的损失函数是什么？它相较基线提升了多少？” 真实证据可能分散成这样： ...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/04/26/HEG/assets/images/Hexo-Theme-MEOW.png">
+<meta property="article:published_time" content="2026-04-26T09:39:37.000Z">
+<meta property="article:modified_time" content="2026-04-26T10:01:06.024Z">
+<meta property="article:author" content="umi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2026/04/26/HEG/assets/images/Hexo-Theme-MEOW.png"><meta name="robots" content="index,follow"/><meta name="googlebot" content="index,follow"/><meta name="revisit-after" content="1 days"/><title>HEG | Umi's Blog</title><link rel="shortcut icon" href="/assets/images/Hexo-Theme-MEOW.ico"><link rel="preconnect" href="/assets"/><link rel="preconnect" href="assets"/><link rel="preconnect" href="assets"/>
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/css/third-party/dist/APlayer.min.css">
+<link rel="prefetch" href="/"/><link rel="prefetch" href="/archives"/><link rel="prefetch" href="/tags"/><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body bg-style="none"><div class="post-progressbar-container"><div class="post-progressbar"></div></div><header><div id="navbar"><div id="nav-info"><a id="site-icon" href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a id="site-name" href="/" title="主页"><div>Umi's Blog</div><img src="/assets/images/svg/uc/uc-home.svg" class="icon noview" alt="Icon"></a></div><div id="nav-menu"><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="sub-menu-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="sub-menu-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div></div><div id="nav-function"><div id="search-btn"><a href="javascript:void(0);" title="搜索" accesskey="s"><img src="/assets/images/svg/uc/uc-search.svg" class="icon noview" alt="Icon"><span>搜索</span></a></div><div id="menu-btn"><a href="javascript:void(0);" title="打开菜单"><img src="/assets/images/svg/uc/uc-menu.svg" class="icon noview" alt="Icon"></a></div></div></div></header><div id="menu-aside"><div id="menu-aside-container"><div id="menu-aside-info"><a href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a href="/" title="主页">Umi's Blog</a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="menu-aside-sub-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-aside-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="menu-aside-sub-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div><hr/></div></div><main><div class="banner"><div class="banner-info"><div class="banner-avatar"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Avatar"/></div><div class="banner-title">「 下辈子吾辈也做一只猫 」</div></div></div><div class="post-container"><div class="post-main"><div class="post-content"><h1 class="post-title">HEG</h1><div class="post-author"><span>作者: umi</span></div><div class="post-meta"><div class="post-info"><div class="post-date"><div class="post-pubdate"><img src="/assets/images/svg/ta/ta-pubdate.svg" class="icon noview" alt="Icon"><span>发表于2026-04-26</span></div><div class="post-update"><img src="/assets/images/svg/ta/ta-update.svg" class="icon noview" alt="Icon"><span>更新于2026-04-26</span></div></div><div class="post-read"></div></div><div class="post-attribute"></div></div><div class="post markdown" indent="false"><p>把 VisRAG 的页级视觉检索、VISA 的框级视觉归因、MoLoRAG 的逻辑页图拼起来，做成一个 Hierarchical Evidence Graph RAG。<br>第一层检索页，第二层在页内找块&#x2F;框，第三层把多个框通过“因果、对比、前后定义、图表-正文解释”等关系连成证据链。</p>
+<blockquote>
+<p>假设问题是：</p>
+<p>“论文中最终采用的损失函数是什么？它相较基线提升了多少？”</p>
+<p>真实证据可能分散成这样：</p>
+<ul>
+<li>第 3 页：方法部分定义损失函数</li>
+<li>第 7 页：实验表格给出和 baseline 的比较</li>
+<li>第 8 页：附图解释为什么会提升</li>
+</ul>
+<p>传统页级检索可能只返回第 7 页，因为“提升了多少”在表里最明显。<br>稍好一点的系统可能返回第 3 页和第 7 页。<br>但你的“分层证据图检索”会进一步做三件事：</p>
+<ol>
+<li>在第 3 页找到“损失函数定义”那一小段区域。</li>
+<li>在第 7 页找到“baseline 对比结果”的表格区域。</li>
+<li>如果第 8 页有图注写着“improvement comes from…”，就把第 8 页图注区和前两块连成一条链。</li>
+</ol>
+<p>最后送给生成器的，不是三整页，而是：</p>
+<ul>
+<li>区域 A：损失函数定义</li>
+<li>区域 B：结果表中的提升数值</li>
+<li>区域 C：图注中的机制说明</li>
+</ul>
+<p>这样生成时既能答“是什么”，也能答“提升了多少”，还可以给出可追溯的证据链。**</p>
+</blockquote>
+<h2 id="核心思想——将检索对象从“页”分为三层"><a href="#核心思想——将检索对象从“页”分为三层" class="headerlink" title="核心思想——将检索对象从“页”分为三层"></a>核心思想——将检索对象从“页”分为三层</h2><p>第一层：页节点 page nodes<br>每一页先作为一个粗粒度候选单元，保留 VisRAG 那种“整页视觉表示”的优点。</p>
+<p>第二层：区域节点 region nodes<br>在候选页内部，再切出若干区域，比如标题区、正文段落区、表格区、图表区、图注区、公式区。（opendataloader）<br>这个思想和 VISA 的“页内精确定位证据框”是接上的，只不过 VISA 更偏生成时归因，这里把它提前到了检索阶段。VISA证明了用边界框去高亮支持答案的精确区域是有价值的。</p>
+<p>第三层：证据链节点或关系边 evidence-chain edges<br>不是简单把几个框拼起来，而是显式表示“这块解释那块”“这张图对应这段正文”“这页的方法对应那页的实验结果”“这张表的列名定义在上一页”。<br>MoLoRAG 的 page graph 已经证明，把页与页的上下文关系建成图并做图遍历，可以把逻辑相关页一起找出来。</p>
+<h2 id="检索的三段式"><a href="#检索的三段式" class="headerlink" title="检索的三段式"></a>检索的三段式</h2><h5 id="1）粗检索：先找“可能相关的页”"><a href="#1）粗检索：先找“可能相关的页”" class="headerlink" title="1）粗检索：先找“可能相关的页”"></a>1）粗检索：先找“可能相关的页”</h5><p>基本沿用 VisRAG 的思路。<br>输入问题后，先拿问题去和所有页面的视觉表示做匹配，找出 top-N 页。（快，而且不丢版面信息。）</p>
+<blockquote>
+<p>VisRAG的核心就是“文档不先转纯文本，而是直接作为图像嵌入再检索”，从而减少解析带来的信息损失。</p>
+</blockquote>
+<h5 id="2）细检索：再找这些页里“真正有用的块”"><a href="#2）细检索：再找这些页里“真正有用的块”" class="headerlink" title="2）细检索：再找这些页里“真正有用的块”"></a>2）细检索：再找这些页里“真正有用的块”</h5><p>相当于页内二次放大。<br>对 top-N 页做区域切分，每个区域单独编码，然后用问题去匹配这些区域，找出 <strong>top-M 个高价值块</strong>。这里可以加入<strong>区域类型偏置</strong>，比如：</p>
+<ul>
+<li>问题是“数值比较”，优先看表格区、图表区；</li>
+<li>问题是“方法定义”，优先看标题区、正文区、公式区；</li>
+<li>问题是“图中现象解释”，优先看图区 + 图注区。</li>
+</ul>
+<p>这一步解决的就是“整页太大、噪声太多”的问题。VISA已经说明，真正支持答案的往往是页内某一精确区域而不是整页全部内容。</p>
+<h5 id="3）链式重排：判断这些块能不能组成“完整证据链”"><a href="#3）链式重排：判断这些块能不能组成“完整证据链”" class="headerlink" title="3）链式重排：判断这些块能不能组成“完整证据链”"></a>3）链式重排：判断这些块能不能组成“完整证据链”</h5><p>这是你这个创新点最关键的地方。<br>三类节点：</p>
+<ul>
+<li>问题节点 (Q)</li>
+<li>候选页节点 (Pi)</li>
+<li>候选块节点 (Bj)</li>
+</ul>
+<p>不是所有高分块堆起来就能答题。你要再问一句：<strong>这些块之间有没有关系？是否共同支持同一个答案？是否缺了一环？</strong><br>于是你对候选块构图，边可以表示：</p>
+<ul>
+<li>同页邻近关系</li>
+<li>跨页引用关系</li>
+<li>图表与正文解释关系</li>
+<li>标题与内容从属关系</li>
+<li>时间&#x2F;流程先后关系</li>
+<li>同一实体或同一指标的跨页延续关系</li>
+</ul>
+<p>然后做图上的重排序或遍历，筛出一条或几条最完整的<strong>证据链</strong>，再<strong>把这条链送给生成模型</strong>。MoLoRAG已经证明，“语义相关 + 逻辑相关”比只看语义更强；你只是把它从页级推进到了“页级 + 区域级 + 链级”。</p>
+<p>一个链分数。一个很自然的打分可以写成：</p>
+<p>$S(\mathcal{C})&#x3D;\alpha S_{\text{page}}+\beta S_{\text{region}}+\gamma S_{\text{relation}}+\delta S_{\text{coverage}}-\lambda S_{\text{noise}}$</p>
+<p>这里：</p>
+<ul>
+<li>$S_{\text{page}}$ 表示候选页整体相关性</li>
+<li>$S_{\text{region}}$ 表示候选区域和问题的局部匹配强度</li>
+<li>$S_{\text{relation}}$ 表示区域之间是否形成合理关系</li>
+<li>$S_{\text{coverage}}$ 表示证据链是否覆盖了回答所需的关键信息</li>
+<li>$S_{\text{noise}}$ 表示链里混入无关块的程度</li>
+</ul>
+<h2 id="在图中的检索"><a href="#在图中的检索" class="headerlink" title="在图中的检索"></a>在图中的检索</h2><p>束检索</p>
+<h3 id="初始候选"><a href="#初始候选" class="headerlink" title="初始候选"></a>初始候选</h3><p>从 (Q) 出发，允许两类初始边：</p>
+<ul>
+<li>$Q \to P_i$</li>
+<li>$Q \to B_j$</li>
+</ul>
+<h3 id="扩展规则"><a href="#扩展规则" class="headerlink" title="扩展规则"></a>扩展规则</h3><p>根据当前节点类型决定怎么扩：</p>
+<p>如果当前链末尾是页节点 (P_i)，允许扩到：</p>
+<ul>
+<li>该页里的高分块 (B_{ij})</li>
+<li>相邻或逻辑相关页 (P_k)</li>
+</ul>
+<p>如果当前链末尾是块节点 (B_j)，允许扩到：</p>
+<ul>
+<li>同页支持块</li>
+<li>跨页互补块</li>
+<li>所属页节点</li>
+</ul>
+<p>这样自然支持：</p>
+<ul>
+<li>页内聚合链</li>
+<li>跨页桥接链</li>
+<li>块起步链</li>
+</ul>
+<h2 id="生成"><a href="#生成" class="headerlink" title="生成"></a>生成</h2><p>输入Q与检索链<br>生成答案<br>输出答案与检索链引用</p>
+</div><div class="post-reward"><div class="post-reward-btn" title="赞赏作者"><img src="/assets/images/svg/uc/uc-gift.svg" class="icon noview" alt="Icon"><span></span></div><div class="post-reward-content"><div class="post-reward-text"></div><div class="post-reward-list"><a href="/null" target="_blank">致谢名单</a></div></div></div><div class="post-copyright"><div class="post-copyright-info">本作品由 umi 于 2026-04-26 17:39:37 发布</div><div class="post-copyright-link"><span>作品地址：<a href="http://example.com/2026/04/26/HEG/">HEG</a></span><button class="copy-text" type="button" data-text="http://example.com/2026/04/26/HEG/">复制</button></div><div class="post-copyright-detail">除特别声明外，本站作品均采用 <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' title='Attribution-NonCommercial-ShareAlike' target='_blank'>CC BY-NC-SA 4.0</a> 许可协议，转载请注明来自 <a href='/'>Umi's Blog</a></div><img class="post-copyright-icon noview" src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></div><div class="post-tail-tags"></div><div class="post-nav"><a class="post-nav-prev" nopost=""></a><a class="post-nav-next" href="/2026/04/26/DocMnemis/" title="DocMnemis">下一篇<span>DocMnemis</span></a></div></div><aside id="post-sidebar" status="show"><div id="toc-container"><div class="toc-title"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"><span>目录</span></div><div class="toc-content" id="toc-div"><ol class="toc-list"><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%E2%80%94%E2%80%94%E5%B0%86%E6%A3%80%E7%B4%A2%E5%AF%B9%E8%B1%A1%E4%BB%8E%E2%80%9C%E9%A1%B5%E2%80%9D%E5%88%86%E4%B8%BA%E4%B8%89%E5%B1%82"><span class="toc-list-text">核心思想——将检索对象从“页”分为三层</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E6%A3%80%E7%B4%A2%E7%9A%84%E4%B8%89%E6%AE%B5%E5%BC%8F"><span class="toc-list-text">检索的三段式</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E5%9C%A8%E5%9B%BE%E4%B8%AD%E7%9A%84%E6%A3%80%E7%B4%A2"><span class="toc-list-text">在图中的检索</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#%E5%88%9D%E5%A7%8B%E5%80%99%E9%80%89"><span class="toc-list-text">初始候选</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#%E6%89%A9%E5%B1%95%E8%A7%84%E5%88%99"><span class="toc-list-text">扩展规则</span></a></li></ol></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E7%94%9F%E6%88%90"><span class="toc-list-text">生成</span></a></li></ol></div></div></aside></div></div><div id="toolbar" hide=""><div id="toolbar-setting-container" hide=""><div class="toolbar-item"><button id="tool-color-mode" title="深色模式" type="button"><img src="/assets/images/svg/ta/ta-moon.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button class="copy-text" id="tool-share" title="分享" type="button" data-text="http://example.com/2026/04/26/HEG/"><img src="/assets/images/svg/ta/ta-share.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-plus" title="放大字体" type="button"><img src="/assets/images/svg/ta/ta-text-plus.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-minus" title="缩小字体" type="button"><img src="/assets/images/svg/ta/ta-text-minus.svg" class="icon noview" alt="Icon"></button></div></div><div class="toolbar-container"><div class="toolbar-item"><button id="tool-setting" title="设置" type="button"><img src="/assets/images/svg/ta/ta-setting.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-toc" title="目录" type="button"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-gototop" title="返回顶部" type="button"><img src="/assets/images/svg/ta/ta-up.svg" class="icon noview" alt="Icon"></button></div></div></div><div class="search-overlay"><div class="search-container"><div class="search-header"><div class="search-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+搜索</div><div class="search-close-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 21a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9a9 9 0 0 0 -9 9a9 9 0 0 0 9 9z" /><path d="M9 8l6 8" /><path d="M15 8l-6 8" /></svg></div></div><div class="search-input-box"><input id="search-input" type="search" placeholder="请输入关键词进行站内搜索……" value="" maxlength="80"/></div><div class="search-result-container"><div class="search-result-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg></div></div></div></div><div id="music-player"></div></main><footer><div class="footer"><div id="footer-copyright">© 2024 - 2026 <span>💗</span> <a href="/null">umi</a></div><div id="footer-info"><div id="footer-framework">🚀本站由 <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/chanwj/hexo-theme-meow" title="3.3.2" target="_blank">Meow</a> 强力驱动</div><div id="footer-runtime"><span id="runtime" data-startdate="2024-04-02T22:16:20.000Z">🌻已稳定运行.年.月.天</span></div></div></div></footer><div class="scripts"><script>const GLOBALCONFIG = {
+  root: '/',
+  toolbar: true,
+  lazyload_src: '/assets/images/Meow-Loading.webp',
+  friends: false,
+  album: '',
+  codeblock: true,
+  code_copy_text: false,
+  share_text: '🐱Share From Meow',
+  onblur_title: '再回来看看吧～✧(´▽`ʃ♡ƪ)',
+  mouse_click: true,
+  notify:{
+    enable: false,
+    info: '复制成功～转载请标注本文地址',
+    f12_info: '开发者模式已打开，请遵循本站版权协议'
+  },
+  search: {
+    enable: true,
+    path: 'search.json',
+    local: {
+      top_n_per_article: 1,
+      preload: false
+    }
+  },
+  encrypt: false,
+  category: false,
+};
+</script><script>if (!localStorage.getItem('color-mode')) {
+  localStorage.setItem('color-mode', 'light' || 'light');
+}
+document.body.setAttribute('data-mode', localStorage.getItem('color-mode'));
+</script>
+<script src="/js/theme/tools/utils.js"></script>
+
+<script src="/js/plugins/dist/lazyload.min.js"></script>
+
+<script src="/js/plugins/view-image.min.js"></script>
+<script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/plugins/dist/APlayer.min.js"></script>
+<script>const initAplayer = (data) => {
+  if (!data.length) return;
+
+  const ap = new APlayer({
+    container: document.getElementById('music-player'),
+    fixed: true,
+    autoplay: false,
+    theme: '#FFB347',
+    loop: 'all',
+    order: 'list',
+    volume: 0.7,
+    lrcType: 3,
+    audio: data
+  });
+
+  ap.on('play', () => {
+    document.getElementById('music-player').setAttribute("play", "");
+  });
+  ap.on('pause', () => {
+    document.getElementById('music-player').removeAttribute("play");
+  });
+};
+
+const fetchData = () => {
+  fetch('')
+    .then(res => res.json())
+    .then(result => initAplayer(result));
+};
+
+if ('') {
+  document.addEventListener("DOMContentLoaded", fetchData);
+} else {
+  document.addEventListener("DOMContentLoaded", initAplayer());;
+}</script>
+<script src="/js/plugins/dist/search.js"></script>
+
+<script src="/js/main.js" type="module"></script>
+</div></body></html>
