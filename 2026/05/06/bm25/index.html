@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="umi"/><meta name="copyright" content="umi"/><meta name="theme-color" content="#FFB347"/><meta name="format-detection" content="telephone=no"/><meta name="keywords" content="信息检索,搜索算法,RAG"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-touch-fullscreen" content="yes"/><meta name="application-name" content="BM25：关键词检索中的经典相关性算法 | Umi's Blog"/><meta name="apple-mobile-web-app-title" content="BM25：关键词检索中的经典相关性算法 | Umi's Blog"/><meta name="apple-mobile-web-app-status-bar-style" content="#FFB347"/><link rel="canonical" href="http://example.com/2026/05/06/bm25/"/><meta name="description" content="BM25BM25（Best Matching 25）是信息检索里非常经典的排序算法。它常用于搜索引擎、站内搜索、文档检索以及 RAG 系统中的召回阶段。虽然现在向量检索和语义检索很流行，但 BM25 依然很重要，因为它对精确关键词匹配非常敏感，速度快、解释性强、实现简单，而且在很多真实业务场景里效果稳定。 一句话概括：  BM25 会根据查询词在文档中出现得多不多、这个词本身稀不稀有、文档是...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BM25：关键词检索中的经典相关性算法 | Umi&#39;s Blog">
+<meta property="og:url" content="http://example.com/2026/05/06/bm25/index.html">
+<meta property="og:site_name" content="Umi&#39;s Blog">
+<meta property="og:description" content="BM25BM25（Best Matching 25）是信息检索里非常经典的排序算法。它常用于搜索引擎、站内搜索、文档检索以及 RAG 系统中的召回阶段。虽然现在向量检索和语义检索很流行，但 BM25 依然很重要，因为它对精确关键词匹配非常敏感，速度快、解释性强、实现简单，而且在很多真实业务场景里效果稳定。 一句话概括：  BM25 会根据查询词在文档中出现得多不多、这个词本身稀不稀有、文档是...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/05/06/bm25/assets/images/Hexo-Theme-MEOW.png">
+<meta property="article:published_time" content="2026-05-06T09:59:21.000Z">
+<meta property="article:author" content="umi">
+<meta property="article:tag" content="信息检索">
+<meta property="article:tag" content="搜索算法">
+<meta property="article:tag" content="RAG">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2026/05/06/bm25/assets/images/Hexo-Theme-MEOW.png"><meta name="robots" content="index,follow"/><meta name="googlebot" content="index,follow"/><meta name="revisit-after" content="1 days"/><title>BM25：关键词检索中的经典相关性算法 | Umi's Blog</title><link rel="shortcut icon" href="/assets/images/Hexo-Theme-MEOW.ico"><link rel="preconnect" href="/assets"/><link rel="preconnect" href="assets"/><link rel="preconnect" href="assets"/>
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/css/third-party/dist/APlayer.min.css">
+<link rel="prefetch" href="/"/><link rel="prefetch" href="/archives"/><link rel="prefetch" href="/tags"/><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body bg-style="none"><div class="post-progressbar-container"><div class="post-progressbar"></div></div><header><div id="navbar"><div id="nav-info"><a id="site-icon" href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a id="site-name" href="/" title="主页"><div>Umi's Blog</div><img src="/assets/images/svg/uc/uc-home.svg" class="icon noview" alt="Icon"></a></div><div id="nav-menu"><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="sub-menu-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="sub-menu-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div></div><div id="nav-function"><div id="search-btn"><a href="javascript:void(0);" title="搜索" accesskey="s"><img src="/assets/images/svg/uc/uc-search.svg" class="icon noview" alt="Icon"><span>搜索</span></a></div><div id="menu-btn"><a href="javascript:void(0);" title="打开菜单"><img src="/assets/images/svg/uc/uc-menu.svg" class="icon noview" alt="Icon"></a></div></div></div></header><div id="menu-aside"><div id="menu-aside-container"><div id="menu-aside-info"><a href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a href="/" title="主页">Umi's Blog</a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="menu-aside-sub-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-aside-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="menu-aside-sub-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div><hr/></div></div><main><div class="banner"><div class="banner-info"><div class="banner-avatar"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Avatar"/></div><div class="banner-title">「 下辈子吾辈也做一只猫 」</div></div></div><div class="post-container"><div class="post-main"><div class="post-content"><h1 class="post-title">BM25：关键词检索中的经典相关性算法</h1><div class="post-author"><span>作者: umi</span></div><div class="post-meta"><div class="post-info"><div class="post-date"><div class="post-pubdate"><img src="/assets/images/svg/ta/ta-pubdate.svg" class="icon noview" alt="Icon"><span>发表于2026-05-06</span></div><div class="post-update"><img src="/assets/images/svg/ta/ta-update.svg" class="icon noview" alt="Icon"><span>更新于2026-05-06</span></div></div><div class="post-read"></div></div><div class="post-attribute"><div class="post-tags"><img src="/assets/images/svg/ta/ta-tag.svg" class="icon noview" alt="Icon"><span><a class="post-tags-link" href="/tags/RAG/" rel="tag">RAG</a><a class="post-tags-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/" rel="tag">信息检索</a><a class="post-tags-link" href="/tags/%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95/" rel="tag">搜索算法</a></span></div></div></div><div class="post markdown" indent="false"><h1 id="BM25"><a href="#BM25" class="headerlink" title="BM25"></a>BM25</h1><p>BM25（Best Matching 25）是信息检索里非常经典的排序算法。它常用于搜索引擎、站内搜索、文档检索以及 RAG 系统中的召回阶段。虽然现在向量检索和语义检索很流行，但 BM25 依然很重要，因为它对<strong>精确关键词匹配</strong>非常敏感，速度快、解释性强、实现简单，而且在很多真实业务场景里效果稳定。</p>
+<p>一句话概括：</p>
+<blockquote>
+<p>BM25 会根据查询词在文档中出现得多不多、这个词本身稀不稀有、文档是不是过长，来计算文档和查询的相关性分数。</p>
+</blockquote>
+<h2 id="为什么需要-BM25"><a href="#为什么需要-BM25" class="headerlink" title="为什么需要 BM25"></a>为什么需要 BM25</h2><p>最朴素的关键词检索方法是统计词频：查询词在文档中出现次数越多，文档越相关。</p>
+<p>比如查询：</p>
+<div class="code-container" code-lang="Text"><div class="codebox"><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vector database</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>如果一篇文章里多次出现 <code>vector</code> 和 <code>database</code>，它看起来就应该更相关。</p>
+<p>但只看词频会有几个问题：</p>
+<ul>
+<li>常见词不应该贡献太高分数，比如 <code>the</code>、<code>is</code>、<code>的</code>、<code>是</code>。</li>
+<li>一个词出现 100 次，不一定比出现 10 次相关 10 倍。</li>
+<li>长文档天然更容易包含查询词，容易拿到不公平的高分。</li>
+<li>不同查询词的重要性不同，稀有词通常更能区分文档。</li>
+</ul>
+<p>BM25 的设计就是为了处理这些问题。它不是简单地数词，而是把词频、逆文档频率和文档长度归一化组合起来。</p>
+<h2 id="BM25-的核心公式"><a href="#BM25-的核心公式" class="headerlink" title="BM25 的核心公式"></a>BM25 的核心公式</h2><p>给定查询 $q$ 和文档 $D$，BM25 的打分公式通常写作：</p>
+<p>$$<br>\text{score}(D, q) &#x3D;<br>\sum_{t \in q}<br>\text{IDF}(t)<br>\cdot<br>\frac{f(t, D) \cdot (k_1 + 1)}<br>{f(t, D) + k_1 \cdot (1 - b + b \cdot \frac{|D|}{\text{avgdl}})}<br>$$</p>
+<p>其中：</p>
+<ul>
+<li>$t$：查询中的某个词。</li>
+<li>$f(t, D)$：词 $t$ 在文档 $D$ 中出现的次数。</li>
+<li>$|D|$：文档 $D$ 的长度。</li>
+<li>$\text{avgdl}$：语料库中文档的平均长度。</li>
+<li>$k_1$：控制词频增长的饱和速度。</li>
+<li>$b$：控制文档长度归一化的强度。</li>
+<li>$\text{IDF}(t)$：词 $t$ 的逆文档频率。</li>
+</ul>
+<p>这个公式看起来有点长，但可以拆成三个直觉部分：</p>
+<ul>
+<li><strong>词越稀有，权重越高</strong>：由 IDF 控制。</li>
+<li><strong>词出现越多，分数越高，但会逐渐饱和</strong>：由词频部分控制。</li>
+<li><strong>文档越长，越需要被适当惩罚</strong>：由文档长度归一化控制。</li>
+</ul>
+<h2 id="IDF：稀有词更重要"><a href="#IDF：稀有词更重要" class="headerlink" title="IDF：稀有词更重要"></a>IDF：稀有词更重要</h2><p>IDF 的意思是 Inverse Document Frequency，也就是逆文档频率。</p>
+<p>如果一个词出现在几乎所有文档里，它区分文档的能力就很弱；如果一个词只出现在少数文档里，它就更有信息量。</p>
+<p>常见的 BM25 IDF 形式是：</p>
+<p>$$<br>\text{IDF}(t) &#x3D;<br>\log<br>\frac{N - n(t) + 0.5}<br>{n(t) + 0.5}<br>$$</p>
+<p>其中：</p>
+<ul>
+<li>$N$：语料库中的文档总数。</li>
+<li>$n(t)$：包含词 $t$ 的文档数量。</li>
+</ul>
+<p>如果 <code>database</code> 出现在很多技术文章里，它的 IDF 可能不算特别高；但如果 <code>BM25</code> 或 <code>HNSW</code> 只出现在少数文章里，它们的 IDF 就会更高。</p>
+<p>实际系统里，为了避免 IDF 为负或数值不稳定，也常使用下面这种平滑版本：</p>
+<p>$$<br>\text{IDF}(t) &#x3D;<br>\log<br>\left(<br>1 +<br>\frac{N - n(t) + 0.5}<br>{n(t) + 0.5}<br>\right)<br>$$</p>
+<h2 id="TF-饱和：不是出现越多就无限加分"><a href="#TF-饱和：不是出现越多就无限加分" class="headerlink" title="TF 饱和：不是出现越多就无限加分"></a>TF 饱和：不是出现越多就无限加分</h2><p>BM25 和传统 TF-IDF 的一个重要区别是：BM25 对词频做了饱和处理。</p>
+<p>假设查询词是 <code>BM25</code>：</p>
+<ul>
+<li>文档 A 出现 1 次。</li>
+<li>文档 B 出现 5 次。</li>
+<li>文档 C 出现 50 次。</li>
+</ul>
+<p>文档 B 通常应该比文档 A 更相关，但文档 C 不应该因为堆了 50 次关键词就获得 50 倍优势。</p>
+<p>BM25 通过下面这一项控制词频贡献：</p>
+<p>$$<br>\frac{f(t, D) \cdot (k_1 + 1)}<br>{f(t, D) + k_1 \cdot (1 - b + b \cdot \frac{|D|}{\text{avgdl}})}<br>$$</p>
+<p>当 $f(t, D)$ 增大时，分数会增长，但增长速度会越来越慢。这让 BM25 对关键词重复堆砌不那么敏感。</p>
+<h2 id="文档长度归一化"><a href="#文档长度归一化" class="headerlink" title="文档长度归一化"></a>文档长度归一化</h2><p>长文档天然更容易命中查询词。如果不做处理，一篇很长的文章可能只是因为内容多，就比短而精准的文章得分更高。</p>
+<p>BM25 使用下面这一项处理文档长度：</p>
+<p>$$<br>1 - b + b \cdot \frac{|D|}{\text{avgdl}}<br>$$</p>
+<p>如果一篇文档比平均文档更长，分母会变大，分数会被压低；如果文档更短，惩罚会更小。</p>
+<p>参数 $b$ 控制长度归一化的强度：</p>
+<ul>
+<li>$b &#x3D; 0$：完全不考虑文档长度。</li>
+<li>$b &#x3D; 1$：完全按照文档长度进行归一化。</li>
+<li>常用默认值：$b &#x3D; 0.75$。</li>
+</ul>
+<h2 id="参数-k1-和-b-怎么理解"><a href="#参数-k1-和-b-怎么理解" class="headerlink" title="参数 k1 和 b 怎么理解"></a>参数 k1 和 b 怎么理解</h2><p>BM25 最常见的两个参数是 $k_1$ 和 $b$。</p>
+<h3 id="k1：控制词频饱和"><a href="#k1：控制词频饱和" class="headerlink" title="k1：控制词频饱和"></a>k1：控制词频饱和</h3><p>$k_1$ 越大，词频带来的增益越明显，分数饱和越慢。</p>
+<p>常用范围：</p>
+<div class="code-container" code-lang="Text"><div class="codebox"><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">k1 = 1.2 ~ 2.0</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>如果你的文档比较短，比如标题、FAQ、短问答，可以用较小的 $k_1$。如果文档较长，而且词频确实能代表相关性，可以适当增大。</p>
+<h3 id="b：控制长度惩罚"><a href="#b：控制长度惩罚" class="headerlink" title="b：控制长度惩罚"></a>b：控制长度惩罚</h3><p>$b$ 越大，文档长度对分数影响越强。</p>
+<p>常用默认值：</p>
+<div class="code-container" code-lang="Text"><div class="codebox"><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b = 0.75</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>如果文档长度差异很大，保留长度归一化通常有帮助。如果所有文档长度差不多，$b$ 的影响就不会特别明显。</p>
+<h2 id="一个简单例子"><a href="#一个简单例子" class="headerlink" title="一个简单例子"></a>一个简单例子</h2><p>假设查询是：</p>
+<div class="code-container" code-lang="Text"><div class="codebox"><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">机器学习 检索</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>有三篇文档：</p>
+<ul>
+<li>文档 A：短文，精准讲机器学习中的检索方法。</li>
+<li>文档 B：长文，包含机器学习、数据库、模型训练、检索等很多内容。</li>
+<li>文档 C：短文，只提到一次机器学习，没有提到检索。</li>
+</ul>
+<p>BM25 大概率会给文档 A 较高分数，因为它短而集中，并且同时命中了两个查询词。</p>
+<p>文档 B 虽然也命中了查询词，但因为篇幅长，相关性会被长度归一化适当压低。</p>
+<p>文档 C 只命中了一部分查询词，所以分数通常不会太高。</p>
+<p>这就是 BM25 的优势：它不只是看有没有命中关键词，还会判断命中的词是否重要、命中次数是否合理、文档长度是否公平。</p>
+<h2 id="BM25-和-TF-IDF-的区别"><a href="#BM25-和-TF-IDF-的区别" class="headerlink" title="BM25 和 TF-IDF 的区别"></a>BM25 和 TF-IDF 的区别</h2><p>BM25 可以看作是 TF-IDF 的改进版本，但它比传统 TF-IDF 更适合搜索排序。</p>
+<p>主要区别：</p>
+<ul>
+<li>TF-IDF 通常直接使用词频，BM25 对词频做饱和处理。</li>
+<li>BM25 显式考虑文档长度归一化。</li>
+<li>BM25 有 $k_1$ 和 $b$ 两个参数，可以根据数据集调节。</li>
+<li>BM25 在真实搜索任务中通常比朴素 TF-IDF 更稳定。</li>
+</ul>
+<p>简单理解：</p>
+<div class="code-container" code-lang="Text"><div class="codebox"><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">TF-IDF：词越稀有、出现越多，分数越高。</span><br><span class="line">BM25：词越稀有、出现越多，分数越高，但增长会饱和，并且会修正文档长度偏差。</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<h2 id="BM25-在-RAG-中的作用"><a href="#BM25-在-RAG-中的作用" class="headerlink" title="BM25 在 RAG 中的作用"></a>BM25 在 RAG 中的作用</h2><p>在 RAG（Retrieval-Augmented Generation）系统里，BM25 常用于第一阶段召回。</p>
+<p>典型流程是：</p>
+<div class="code-container" code-lang="Text"><div class="codebox"><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用户问题</span><br><span class="line">  -&gt; BM25 关键词召回</span><br><span class="line">  -&gt; 向量检索语义召回</span><br><span class="line">  -&gt; 合并候选文档</span><br><span class="line">  -&gt; 重排序 rerank</span><br><span class="line">  -&gt; 送入大模型生成答案</span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>BM25 在 RAG 中尤其适合处理：</p>
+<ul>
+<li>专有名词，比如论文名、函数名、类名、接口名。</li>
+<li>编号和代码，比如 <code>ERR_1024</code>、<code>user_id</code>、<code>HNSW</code>。</li>
+<li>精确短语，比如配置项、命令、产品型号。</li>
+<li>用户明确输入关键词的场景。</li>
+</ul>
+<p>向量检索擅长语义相似，但有时会漏掉精确字符串；BM25 正好补上这个短板。所以很多检索系统会使用 hybrid search，也就是 BM25 + dense embedding 的混合检索。</p>
+<h2 id="BM25-的优点"><a href="#BM25-的优点" class="headerlink" title="BM25 的优点"></a>BM25 的优点</h2><p>BM25 的优点非常明确：</p>
+<ul>
+<li>实现简单，计算速度快。</li>
+<li>不依赖训练数据。</li>
+<li>对精确关键词匹配非常强。</li>
+<li>可解释性好，可以知道哪些词贡献了分数。</li>
+<li>适合作为搜索系统的强 baseline。</li>
+<li>和向量检索互补，适合混合检索。</li>
+</ul>
+<p>这也是为什么即使进入大模型时代，BM25 依然没有过时。</p>
+<h2 id="BM25-的局限"><a href="#BM25-的局限" class="headerlink" title="BM25 的局限"></a>BM25 的局限</h2><p>BM25 也有明显局限：</p>
+<ul>
+<li>不理解语义相似，比如“汽车”和“车辆”如果没有同时出现，就很难匹配。</li>
+<li>对分词质量敏感，中文场景尤其明显。</li>
+<li>对同义词、缩写、拼写错误不够鲁棒。</li>
+<li>只关注词面匹配，不理解上下文含义。</li>
+<li>对跨语言检索支持较弱。</li>
+</ul>
+<p>所以在现代系统中，BM25 很少单独承担全部检索任务。更常见的做法是把它和向量检索、query rewrite、rerank 模型结合起来。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>BM25 是一个经典但仍然非常实用的关键词检索算法。它通过 IDF 衡量词的重要性，通过词频饱和避免关键词堆砌，通过文档长度归一化修正长文档优势。</p>
+<p>它最大的价值不是“替代语义检索”，而是提供一种稳定、快速、可解释的精确匹配能力。在现代 RAG 和搜索系统中，BM25 通常和向量检索一起使用：BM25 负责抓住关键词和专有名词，向量检索负责抓住语义相似，再通过重排序模型融合两者的结果。</p>
+<p>如果要搭建一个可靠的检索系统，BM25 依然是最值得先实现的 baseline 之一。</p>
+</div><div class="post-reward"><div class="post-reward-btn" title="赞赏作者"><img src="/assets/images/svg/uc/uc-gift.svg" class="icon noview" alt="Icon"><span></span></div><div class="post-reward-content"><div class="post-reward-text"></div><div class="post-reward-list"><a href="/null" target="_blank">致谢名单</a></div></div></div><div class="post-copyright"><div class="post-copyright-info">本作品由 umi 于 2026-05-06 17:59:21 发布</div><div class="post-copyright-link"><span>作品地址：<a href="http://example.com/2026/05/06/bm25/">BM25：关键词检索中的经典相关性算法</a></span><button class="copy-text" type="button" data-text="http://example.com/2026/05/06/bm25/">复制</button></div><div class="post-copyright-detail">除特别声明外，本站作品均采用 <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' title='Attribution-NonCommercial-ShareAlike' target='_blank'>CC BY-NC-SA 4.0</a> 许可协议，转载请注明来自 <a href='/'>Umi's Blog</a></div><img class="post-copyright-icon noview" src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></div><div class="post-tail-tags"><a class="post-tail-tags-link" href="/tags/RAG/" rel="tag">RAG</a><a class="post-tail-tags-link" href="/tags/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/" rel="tag">信息检索</a><a class="post-tail-tags-link" href="/tags/%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95/" rel="tag">搜索算法</a></div><div class="post-nav"><a class="post-nav-prev" nopost=""></a><a class="post-nav-next" href="/2026/04/28/%E6%A0%91/" title="树">下一篇<span>树</span></a></div></div><aside id="post-sidebar" status="show"><div id="toc-container"><div class="toc-title"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"><span>目录</span></div><div class="toc-content" id="toc-div"><ol class="toc-list"><li class="toc-list-item toc-list-level-1"><a class="toc-list-link" href="#BM25"><span class="toc-list-text">BM25</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81-BM25"><span class="toc-list-text">为什么需要 BM25</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#BM25-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%85%AC%E5%BC%8F"><span class="toc-list-text">BM25 的核心公式</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#IDF%EF%BC%9A%E7%A8%80%E6%9C%89%E8%AF%8D%E6%9B%B4%E9%87%8D%E8%A6%81"><span class="toc-list-text">IDF：稀有词更重要</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#TF-%E9%A5%B1%E5%92%8C%EF%BC%9A%E4%B8%8D%E6%98%AF%E5%87%BA%E7%8E%B0%E8%B6%8A%E5%A4%9A%E5%B0%B1%E6%97%A0%E9%99%90%E5%8A%A0%E5%88%86"><span class="toc-list-text">TF 饱和：不是出现越多就无限加分</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E6%96%87%E6%A1%A3%E9%95%BF%E5%BA%A6%E5%BD%92%E4%B8%80%E5%8C%96"><span class="toc-list-text">文档长度归一化</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E5%8F%82%E6%95%B0-k1-%E5%92%8C-b-%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3"><span class="toc-list-text">参数 k1 和 b 怎么理解</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#k1%EF%BC%9A%E6%8E%A7%E5%88%B6%E8%AF%8D%E9%A2%91%E9%A5%B1%E5%92%8C"><span class="toc-list-text">k1：控制词频饱和</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#b%EF%BC%9A%E6%8E%A7%E5%88%B6%E9%95%BF%E5%BA%A6%E6%83%A9%E7%BD%9A"><span class="toc-list-text">b：控制长度惩罚</span></a></li></ol></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90"><span class="toc-list-text">一个简单例子</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#BM25-%E5%92%8C-TF-IDF-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-list-text">BM25 和 TF-IDF 的区别</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#BM25-%E5%9C%A8-RAG-%E4%B8%AD%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-list-text">BM25 在 RAG 中的作用</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#BM25-%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-list-text">BM25 的优点</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#BM25-%E7%9A%84%E5%B1%80%E9%99%90"><span class="toc-list-text">BM25 的局限</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-list-text">总结</span></a></li></ol></li></ol></div></div></aside></div></div><div id="toolbar" hide=""><div id="toolbar-setting-container" hide=""><div class="toolbar-item"><button id="tool-color-mode" title="深色模式" type="button"><img src="/assets/images/svg/ta/ta-moon.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button class="copy-text" id="tool-share" title="分享" type="button" data-text="http://example.com/2026/05/06/bm25/"><img src="/assets/images/svg/ta/ta-share.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-plus" title="放大字体" type="button"><img src="/assets/images/svg/ta/ta-text-plus.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-minus" title="缩小字体" type="button"><img src="/assets/images/svg/ta/ta-text-minus.svg" class="icon noview" alt="Icon"></button></div></div><div class="toolbar-container"><div class="toolbar-item"><button id="tool-setting" title="设置" type="button"><img src="/assets/images/svg/ta/ta-setting.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-toc" title="目录" type="button"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-gototop" title="返回顶部" type="button"><img src="/assets/images/svg/ta/ta-up.svg" class="icon noview" alt="Icon"></button></div></div></div><div class="search-overlay"><div class="search-container"><div class="search-header"><div class="search-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+搜索</div><div class="search-close-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 21a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9a9 9 0 0 0 -9 9a9 9 0 0 0 9 9z" /><path d="M9 8l6 8" /><path d="M15 8l-6 8" /></svg></div></div><div class="search-input-box"><input id="search-input" type="search" placeholder="请输入关键词进行站内搜索……" value="" maxlength="80"/></div><div class="search-result-container"><div class="search-result-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg></div></div></div></div><div id="music-player"></div></main><footer><div class="footer"><div id="footer-copyright">© 2024 - 2026 <span>💗</span> <a href="/null">umi</a></div><div id="footer-info"><div id="footer-framework">🚀本站由 <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/chanwj/hexo-theme-meow" title="3.3.2" target="_blank">Meow</a> 强力驱动</div><div id="footer-runtime"><span id="runtime" data-startdate="2024-04-02T22:16:20.000Z">🌻已稳定运行.年.月.天</span></div></div></div></footer><div class="scripts"><script>const GLOBALCONFIG = {
+  root: '/',
+  toolbar: true,
+  lazyload_src: '/assets/images/Meow-Loading.webp',
+  friends: false,
+  album: '',
+  codeblock: true,
+  code_copy_text: false,
+  share_text: '🐱Share From Meow',
+  onblur_title: '再回来看看吧～✧(´▽`ʃ♡ƪ)',
+  mouse_click: true,
+  notify:{
+    enable: false,
+    info: '复制成功～转载请标注本文地址',
+    f12_info: '开发者模式已打开，请遵循本站版权协议'
+  },
+  search: {
+    enable: true,
+    path: 'search.json',
+    local: {
+      top_n_per_article: 1,
+      preload: false
+    }
+  },
+  encrypt: false,
+  category: false,
+};
+</script><script>if (!localStorage.getItem('color-mode')) {
+  localStorage.setItem('color-mode', 'light' || 'light');
+}
+document.body.setAttribute('data-mode', localStorage.getItem('color-mode'));
+</script>
+<script src="/js/theme/tools/utils.js"></script>
+
+<script src="/js/plugins/dist/lazyload.min.js"></script>
+
+<script src="/js/plugins/view-image.min.js"></script>
+<script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/plugins/dist/APlayer.min.js"></script>
+<script>const initAplayer = (data) => {
+  if (!data.length) return;
+
+  const ap = new APlayer({
+    container: document.getElementById('music-player'),
+    fixed: true,
+    autoplay: false,
+    theme: '#FFB347',
+    loop: 'all',
+    order: 'list',
+    volume: 0.7,
+    lrcType: 3,
+    audio: data
+  });
+
+  ap.on('play', () => {
+    document.getElementById('music-player').setAttribute("play", "");
+  });
+  ap.on('pause', () => {
+    document.getElementById('music-player').removeAttribute("play");
+  });
+};
+
+const fetchData = () => {
+  fetch('')
+    .then(res => res.json())
+    .then(result => initAplayer(result));
+};
+
+if ('') {
+  document.addEventListener("DOMContentLoaded", fetchData);
+} else {
+  document.addEventListener("DOMContentLoaded", initAplayer());;
+}</script>
+<script src="/js/plugins/dist/search.js"></script>
+
+<script src="/js/main.js" type="module"></script>
+</div></body></html>
