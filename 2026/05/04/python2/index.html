@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="umi"/><meta name="copyright" content="umi"/><meta name="theme-color" content="#FFB347"/><meta name="format-detection" content="telephone=no"/><meta name="keywords" content="算法,Python"/><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-touch-fullscreen" content="yes"/><meta name="application-name" content="Python —— 对象的可变与不可变 | Umi's Blog"/><meta name="apple-mobile-web-app-title" content="Python —— 对象的可变与不可变 | Umi's Blog"/><meta name="apple-mobile-web-app-status-bar-style" content="#FFB347"/><link rel="canonical" href="http://example.com/2026/05/04/python2/"/><meta name="description" content="在 Python 中，我们常说的“可变”与“不可变”其实是指对象（值）本身能否被修改，  一、不可变对象一旦创建，其内部状态就不能再改变。任何看起来“修改”它的操作，实际都会返回一个全新的对象。 1. 常见不可变类型 数字：int、float、complex、bool（bool 是 int 的子类） 字符串：str 字节串：bytes 元组：tuple 冻结集合：frozenset  2. ...">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python —— 对象的可变与不可变 | Umi&#39;s Blog">
+<meta property="og:url" content="http://example.com/2026/05/04/python2/index.html">
+<meta property="og:site_name" content="Umi&#39;s Blog">
+<meta property="og:description" content="在 Python 中，我们常说的“可变”与“不可变”其实是指对象（值）本身能否被修改，  一、不可变对象一旦创建，其内部状态就不能再改变。任何看起来“修改”它的操作，实际都会返回一个全新的对象。 1. 常见不可变类型 数字：int、float、complex、bool（bool 是 int 的子类） 字符串：str 字节串：bytes 元组：tuple 冻结集合：frozenset  2. ...">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2026/05/04/python2/assets/images/Hexo-Theme-MEOW.png">
+<meta property="article:published_time" content="2026-05-04T15:09:32.000Z">
+<meta property="article:modified_time" content="2026-05-04T15:09:32.000Z">
+<meta property="article:author" content="umi">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2026/05/04/python2/assets/images/Hexo-Theme-MEOW.png"><meta name="robots" content="index,follow"/><meta name="googlebot" content="index,follow"/><meta name="revisit-after" content="1 days"/><title>Python —— 对象的可变与不可变 | Umi's Blog</title><link rel="shortcut icon" href="/assets/images/Hexo-Theme-MEOW.ico"><link rel="preconnect" href="/assets"/><link rel="preconnect" href="assets"/><link rel="preconnect" href="assets"/>
+<link rel="stylesheet" href="/css/style.css">
+
+<link rel="stylesheet" href="/css/third-party/dist/APlayer.min.css">
+<link rel="prefetch" href="/"/><link rel="prefetch" href="/archives"/><link rel="prefetch" href="/tags"/><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body bg-style="none"><div class="post-progressbar-container"><div class="post-progressbar"></div></div><header><div id="navbar"><div id="nav-info"><a id="site-icon" href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a id="site-name" href="/" title="主页"><div>Umi's Blog</div><img src="/assets/images/svg/uc/uc-home.svg" class="icon noview" alt="Icon"></a></div><div id="nav-menu"><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="sub-menu-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="sub-menu-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div></div><div id="nav-function"><div id="search-btn"><a href="javascript:void(0);" title="搜索" accesskey="s"><img src="/assets/images/svg/uc/uc-search.svg" class="icon noview" alt="Icon"><span>搜索</span></a></div><div id="menu-btn"><a href="javascript:void(0);" title="打开菜单"><img src="/assets/images/svg/uc/uc-menu.svg" class="icon noview" alt="Icon"></a></div></div></div></header><div id="menu-aside"><div id="menu-aside-container"><div id="menu-aside-info"><a href="/" title="主页"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></a><a href="/" title="主页">Umi's Blog</a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-article.svg" class="icon noview" alt="Icon"><span>文章</span></a><ul class="menu-aside-sub-item"><li><a href="/archives"><img src="/assets/images/svg/uc/uc-archive.svg" class="icon noview" alt="Icon"><span>归档</span></a></li><li><a href="/categories"><img src="/assets/images/svg/uc/uc-category.svg" class="icon noview" alt="Icon"><span>分类</span></a></li><li><a href="/tags"><img src="/assets/images/svg/uc/uc-tag.svg" class="icon noview" alt="Icon"><span>标签</span></a></li></ul></div><div class="menu-aside-item"><a href="/aboutme"><img src="/assets/images/svg/uc/uc-about.svg" class="icon noview" alt="Icon"><span>关于</span></a></div><div class="menu-aside-item"><a href="javascript:void(0);"><img src="/assets/images/svg/uc/uc-link.svg" class="icon noview" alt="Icon"><span>链接</span></a><ul class="menu-aside-sub-item"><li><a href="/friends"><img src="/assets/images/svg/uc/uc-friend.svg" class="icon noview" alt="Icon"><span>友情链接</span></a></li></ul></div><hr/></div></div><main><div class="banner"><div class="banner-info"><div class="banner-avatar"><img src="/assets/images/Hexo-Theme-MEOW.png" alt="Avatar"/></div><div class="banner-title">「 下辈子吾辈也做一只猫 」</div></div></div><div class="post-container"><div class="post-main"><div class="post-content"><h1 class="post-title">Python —— 对象的可变与不可变</h1><div class="post-author"><span>作者: umi</span></div><div class="post-meta"><div class="post-info"><div class="post-date"><div class="post-pubdate"><img src="/assets/images/svg/ta/ta-pubdate.svg" class="icon noview" alt="Icon"><span>发表于2026-05-04</span></div><div class="post-update"><img src="/assets/images/svg/ta/ta-update.svg" class="icon noview" alt="Icon"><span>更新于2026-05-04</span></div></div><div class="post-read"></div></div><div class="post-attribute"><div class="post-tags"><img src="/assets/images/svg/ta/ta-tag.svg" class="icon noview" alt="Icon"><span><a class="post-tags-link" href="/tags/Python/" rel="tag">Python</a><a class="post-tags-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></span></div></div></div><div class="post markdown" indent="false"><p>在 Python 中，我们常说的“可变”与“不可变”其实是指<strong>对象（值）本身能否被修改</strong>，</p>
+<hr>
+<h2 id="一、不可变对象"><a href="#一、不可变对象" class="headerlink" title="一、不可变对象"></a>一、不可变对象</h2><p><strong>一旦创建，其内部状态就不能再改变</strong>。任何看起来“修改”它的操作，实际都会返回一个全新的对象。</p>
+<h3 id="1-常见不可变类型"><a href="#1-常见不可变类型" class="headerlink" title="1. 常见不可变类型"></a>1. 常见不可变类型</h3><ul>
+<li>数字：<code>int</code>、<code>float</code>、<code>complex</code>、<code>bool</code>（<code>bool</code> 是 <code>int</code> 的子类）</li>
+<li>字符串：<code>str</code></li>
+<li>字节串：<code>bytes</code></li>
+<li>元组：<code>tuple</code></li>
+<li>冻结集合：<code>frozenset</code></li>
+</ul>
+<h3 id="2-如何体现“不可变”"><a href="#2-如何体现“不可变”" class="headerlink" title="2. 如何体现“不可变”"></a>2. 如何体现“不可变”</h3><p><strong>通过 <code>id()</code> 观察内存地址的变化</strong></p>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(a))   <span class="comment"># 例如 140722345678944</span></span><br><span class="line">a += <span class="number">1</span>         <span class="comment"># 看起来像修改，其实是创建了新整数对象 11</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(a))   <span class="comment"># 地址变化，和上面不同</span></span><br><span class="line"></span><br><span class="line">s = <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(s))   <span class="comment"># 地址A</span></span><br><span class="line">s = s.upper()  <span class="comment"># 产生新字符串 &quot;HELLO&quot;，重新绑定给 s</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(s))   <span class="comment"># 地址B，与A不同；原来的 &quot;hello&quot; 没变</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p><strong>元组不允许赋值修改其元素</strong></p>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">t[<span class="number">0</span>] = <span class="number">100</span>     <span class="comment"># TypeError: &#x27;tuple&#x27; object does not support item assignment</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>但注意：如果元组里包含<strong>可变对象</strong>（如列表），元组本身仍然不可变（元素引用不变），但那个可变对象的内容是可以改变的：</p>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">t = (<span class="number">1</span>, [<span class="number">2</span>, <span class="number">3</span>], <span class="number">4</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(t))          <span class="comment"># 地址C</span></span><br><span class="line">t[<span class="number">1</span>].append(<span class="number">5</span>)        <span class="comment"># 修改的是列表，元组本身的引用没有变</span></span><br><span class="line"><span class="built_in">print</span>(t)              <span class="comment"># (1, [2, 3, 5], 4)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(t))          <span class="comment"># 地址依然是C</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p>这体现出<strong>不可变约束的是引用关系，而非被引用对象的内部状态</strong>。</p>
+<hr>
+<h2 id="二、可变对象"><a href="#二、可变对象" class="headerlink" title="二、可变对象"></a>二、可变对象</h2><p><strong>对象创建后，其内部状态可以被直接修改</strong>，而对象的内存地址不会变化。</p>
+<h3 id="1-常见可变类型"><a href="#1-常见可变类型" class="headerlink" title="1. 常见可变类型"></a>1. 常见可变类型</h3><ul>
+<li>列表：<code>list</code></li>
+<li>字典：<code>dict</code></li>
+<li>集合：<code>set</code></li>
+<li>字节数组：<code>bytearray</code></li>
+<li>多数自定义类的实例（默认可变）</li>
+</ul>
+<h3 id="2-如何体现“可变”"><a href="#2-如何体现“可变”" class="headerlink" title="2. 如何体现“可变”"></a>2. 如何体现“可变”</h3><p><strong>操作前后 <code>id()</code> 不变</strong></p>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(lst))   <span class="comment"># 地址X</span></span><br><span class="line">lst.append(<span class="number">4</span>)    <span class="comment"># 原地添加元素</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(lst))   <span class="comment"># 地址仍然是X，对象自身改变了</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p><strong>共享引用时的副作用</strong></p>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">b = a            <span class="comment"># a 和 b 指向同一个列表对象</span></span><br><span class="line">b.append(<span class="number">3</span>)</span><br><span class="line"><span class="built_in">print</span>(a)         <span class="comment"># [1, 2, 3]  —— a 也被“影响”了</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<p><strong>字典、集合等也是如此</strong></p>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;<span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;value&#x27;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(d))</span><br><span class="line">d[<span class="string">&#x27;new&#x27;</span>] = <span class="string">&#x27;data&#x27;</span>   <span class="comment"># 原地修改</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">id</span>(d))        <span class="comment"># 地址不变</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<hr>
+<h2 id="三、一眼分清：观察操作是原地修改还是返回新对象"><a href="#三、一眼分清：观察操作是原地修改还是返回新对象" class="headerlink" title="三、一眼分清：观察操作是原地修改还是返回新对象"></a>三、一眼分清：观察操作是原地修改还是返回新对象</h2><ul>
+<li><strong>返回新对象的方法</strong> → 常用于不可变类型<br>例：<code>str.upper()</code>、<code>str.replace()</code>、整数运算 <code>+</code>、<code>tuple()</code> 等。</li>
+<li><strong>原地修改且返回 <code>None</code> 的方法</strong> → 常用于可变类型<br>例：<code>list.append()</code>、<code>list.sort()</code>、<code>dict.update()</code>、<code>set.add()</code> 等。</li>
+</ul>
+<p>判断技巧：在交互环境或代码里用 <code>id()</code> 检验，或者看操作后原变量是否改变。</p>
+<hr>
+<h2 id="四、实际影响"><a href="#四、实际影响" class="headerlink" title="四、实际影响"></a>四、实际影响</h2><ul>
+<li>不可变对象是<strong>可哈希</strong>的 → 可作为字典的键、集合的元素（如 <code>int</code>、<code>str</code>、<code>tuple</code>）。</li>
+<li>可变对象<strong>不可哈希</strong> → 不能当键或集合元素，否则会因内容变化导致查找异常。</li>
+<li>函数传参时：传入不可变对象，函数内修改不影响外部（因为会新建对象）；传入可变对象，函数内<strong>原地修改</strong>会直接影响外部数据。</li>
+</ul>
+<div class="code-container" code-lang="Python"><div class="codebox"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">modify_num</span>(<span class="params">x</span>):</span><br><span class="line">    x += <span class="number">1</span>        <span class="comment"># 新建对象，外部实参不变</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">modify_list</span>(<span class="params">lst</span>):</span><br><span class="line">    lst.append(<span class="number">100</span>)  <span class="comment"># 原地修改，外部实参会变</span></span><br></pre></td></tr></table></figure><div class="code-fold" title="Fold/Open"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg></div><div class="code-copy" title="Copy"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"  stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg></div></div></div>
+
+<hr>
+<p><strong>总结</strong>：Python 的“可变&#x2F;不可变”本质是<strong>对象能否原地修改</strong>。用 <code>id()</code> 看地址是否改变，是区分它们最直观的方法。理解这一点有助于避免引用陷阱，并正确使用字典键、函数参数等。</p>
+</div><div class="post-reward"><div class="post-reward-btn" title="赞赏作者"><img src="/assets/images/svg/uc/uc-gift.svg" class="icon noview" alt="Icon"><span></span></div><div class="post-reward-content"><div class="post-reward-text"></div><div class="post-reward-list"><a href="/null" target="_blank">致谢名单</a></div></div></div><div class="post-copyright"><div class="post-copyright-info">本作品由 umi 于 2026-05-04 23:09:32 发布</div><div class="post-copyright-link"><span>作品地址：<a href="http://example.com/2026/05/04/python2/">Python —— 对象的可变与不可变</a></span><button class="copy-text" type="button" data-text="http://example.com/2026/05/04/python2/">复制</button></div><div class="post-copyright-detail">除特别声明外，本站作品均采用 <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/' title='Attribution-NonCommercial-ShareAlike' target='_blank'>CC BY-NC-SA 4.0</a> 许可协议，转载请注明来自 <a href='/'>Umi's Blog</a></div><img class="post-copyright-icon noview" src="/assets/images/Hexo-Theme-MEOW.png" alt="Logo"/></div><div class="post-tail-tags"><a class="post-tail-tags-link" href="/tags/Python/" rel="tag">Python</a><a class="post-tail-tags-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></div><div class="post-nav"><a class="post-nav-prev" href="/2026/05/06/bm25/" title="BM25：关键词检索中的经典相关性算法">上一篇<span>BM25：关键词检索中的经典相关性算法</span></a><a class="post-nav-next" href="/2026/05/03/python/" title="Python —— *的用途">下一篇<span>Python —— *的用途</span></a></div></div><aside id="post-sidebar" status="show"><div id="toc-container"><div class="toc-title"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"><span>目录</span></div><div class="toc-content" id="toc-div"><ol class="toc-list"><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E4%B8%80%E3%80%81%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1"><span class="toc-list-text">一、不可变对象</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#1-%E5%B8%B8%E8%A7%81%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B"><span class="toc-list-text">1. 常见不可变类型</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#2-%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0%E2%80%9C%E4%B8%8D%E5%8F%AF%E5%8F%98%E2%80%9D"><span class="toc-list-text">2. 如何体现“不可变”</span></a></li></ol></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E4%BA%8C%E3%80%81%E5%8F%AF%E5%8F%98%E5%AF%B9%E8%B1%A1"><span class="toc-list-text">二、可变对象</span></a><ol class="toc-list-child"><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#1-%E5%B8%B8%E8%A7%81%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B"><span class="toc-list-text">1. 常见可变类型</span></a></li><li class="toc-list-item toc-list-level-3"><a class="toc-list-link" href="#2-%E5%A6%82%E4%BD%95%E4%BD%93%E7%8E%B0%E2%80%9C%E5%8F%AF%E5%8F%98%E2%80%9D"><span class="toc-list-text">2. 如何体现“可变”</span></a></li></ol></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E4%B8%89%E3%80%81%E4%B8%80%E7%9C%BC%E5%88%86%E6%B8%85%EF%BC%9A%E8%A7%82%E5%AF%9F%E6%93%8D%E4%BD%9C%E6%98%AF%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9%E8%BF%98%E6%98%AF%E8%BF%94%E5%9B%9E%E6%96%B0%E5%AF%B9%E8%B1%A1"><span class="toc-list-text">三、一眼分清：观察操作是原地修改还是返回新对象</span></a></li><li class="toc-list-item toc-list-level-2"><a class="toc-list-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E9%99%85%E5%BD%B1%E5%93%8D"><span class="toc-list-text">四、实际影响</span></a></li></ol></div></div></aside></div></div><div id="toolbar" hide=""><div id="toolbar-setting-container" hide=""><div class="toolbar-item"><button id="tool-color-mode" title="深色模式" type="button"><img src="/assets/images/svg/ta/ta-moon.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button class="copy-text" id="tool-share" title="分享" type="button" data-text="http://example.com/2026/05/04/python2/"><img src="/assets/images/svg/ta/ta-share.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-plus" title="放大字体" type="button"><img src="/assets/images/svg/ta/ta-text-plus.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-font-size-minus" title="缩小字体" type="button"><img src="/assets/images/svg/ta/ta-text-minus.svg" class="icon noview" alt="Icon"></button></div></div><div class="toolbar-container"><div class="toolbar-item"><button id="tool-setting" title="设置" type="button"><img src="/assets/images/svg/ta/ta-setting.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-toc" title="目录" type="button"><img src="/assets/images/svg/ta/ta-toc.svg" class="icon noview" alt="Icon"></button></div><div class="toolbar-item"><button id="tool-gototop" title="返回顶部" type="button"><img src="/assets/images/svg/ta/ta-up.svg" class="icon noview" alt="Icon"></button></div></div></div><div class="search-overlay"><div class="search-container"><div class="search-header"><div class="search-title"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+搜索</div><div class="search-close-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 21a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9a9 9 0 0 0 -9 9a9 9 0 0 0 9 9z" /><path d="M9 8l6 8" /><path d="M15 8l-6 8" /></svg></div></div><div class="search-input-box"><input id="search-input" type="search" placeholder="请输入关键词进行站内搜索……" value="" maxlength="80"/></div><div class="search-result-container"><div class="search-result-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg></div></div></div></div><div id="music-player"></div></main><footer><div class="footer"><div id="footer-copyright">© 2024 - 2026 <span>💗</span> <a href="/null">umi</a></div><div id="footer-info"><div id="footer-framework">🚀本站由 <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/chanwj/hexo-theme-meow" title="3.3.2" target="_blank">Meow</a> 强力驱动</div><div id="footer-runtime"><span id="runtime" data-startdate="2024-04-02T22:16:20.000Z">🌻已稳定运行.年.月.天</span></div></div></div></footer><div class="scripts"><script>const GLOBALCONFIG = {
+  root: '/',
+  toolbar: true,
+  lazyload_src: '/assets/images/Meow-Loading.webp',
+  friends: false,
+  album: '',
+  codeblock: true,
+  code_copy_text: false,
+  share_text: '🐱Share From Meow',
+  onblur_title: '再回来看看吧～✧(´▽`ʃ♡ƪ)',
+  mouse_click: true,
+  notify:{
+    enable: false,
+    info: '复制成功～转载请标注本文地址',
+    f12_info: '开发者模式已打开，请遵循本站版权协议'
+  },
+  search: {
+    enable: true,
+    path: 'search.json',
+    local: {
+      top_n_per_article: 1,
+      preload: false
+    }
+  },
+  encrypt: false,
+  category: false,
+};
+</script><script>if (!localStorage.getItem('color-mode')) {
+  localStorage.setItem('color-mode', 'light' || 'light');
+}
+document.body.setAttribute('data-mode', localStorage.getItem('color-mode'));
+</script>
+<script src="/js/theme/tools/utils.js"></script>
+
+<script src="/js/plugins/dist/lazyload.min.js"></script>
+
+<script src="/js/plugins/view-image.min.js"></script>
+<script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/plugins/dist/APlayer.min.js"></script>
+<script>const initAplayer = (data) => {
+  if (!data.length) return;
+
+  const ap = new APlayer({
+    container: document.getElementById('music-player'),
+    fixed: true,
+    autoplay: false,
+    theme: '#FFB347',
+    loop: 'all',
+    order: 'list',
+    volume: 0.7,
+    lrcType: 3,
+    audio: data
+  });
+
+  ap.on('play', () => {
+    document.getElementById('music-player').setAttribute("play", "");
+  });
+  ap.on('pause', () => {
+    document.getElementById('music-player').removeAttribute("play");
+  });
+};
+
+const fetchData = () => {
+  fetch('')
+    .then(res => res.json())
+    .then(result => initAplayer(result));
+};
+
+if ('') {
+  document.addEventListener("DOMContentLoaded", fetchData);
+} else {
+  document.addEventListener("DOMContentLoaded", initAplayer());;
+}</script>
+<script src="/js/plugins/dist/search.js"></script>
+
+<script src="/js/main.js" type="module"></script>
+</div></body></html>
